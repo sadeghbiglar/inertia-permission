@@ -61,7 +61,18 @@ watch(
                     />
                     <InputError class="mt-2" :message="form.errors.name"/>
                 </div>
-
+                <div class="mt-4">
+                    <InputLabel for="permissions" value="Permissions"/>
+                    <VueMultiselect
+                        v-model="form.permissions"
+                        :options="permissions"
+                        :multiple="true"
+                        :close-on-select="true"
+                        placeholder="چنتا انتخاب کن"
+                        label="name"
+                        track-by="id"
+                    />
+                </div>
 
                 <div class="flex items-center mt-4">
 
@@ -72,5 +83,31 @@ watch(
                 </div>
             </form>
         </div>
-           </AdminLayout>
+        <div class="mt-6 max-w-6xl mx-auto bg-slate-100 shadow-lg rounded-lg p-6">
+            <h1 class="text-2xl font-semibold text-indigo-700">Permissions</h1>
+            <div class="bg-white">
+                <Table>
+                    <template #header>
+                        <TableRow>
+                            <TableHeaderCell>Id</TableHeaderCell>
+                            <TableHeaderCell>Name</TableHeaderCell>
+                            <TableHeaderCell>Action</TableHeaderCell>
+                        </TableRow>
+                    </template>
+                    <template #default>
+                        <TableRow v-for="rolePermission in role.permissions" :key="rolePermission.id">
+                            <TableDataCell>{{rolePermission.id}}</TableDataCell>
+                            <TableDataCell>{{rolePermission.name}}</TableDataCell>
+                            <TableDataCell class="space-x-4">
+                                <Link :href="route('roles.permissions.destroy',[role.id,rolePermission.id])" method="DELETE" as="button" class="text-red-400 hover:text-red-600">
+                                    Revoke
+                                </Link>
+                            </TableDataCell>
+                        </TableRow>
+                    </template>
+                </Table>
+            </div>
+        </div>
+    </AdminLayout>
 </template>
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
